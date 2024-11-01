@@ -2,5 +2,6 @@
 /__pycache__
 /.ruff_cache
 /data
+/logs
 
 /.vscode

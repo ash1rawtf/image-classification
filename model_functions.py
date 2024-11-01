@@ -2,9 +2,11 @@ from timeit import default_timer
 
 import helper_functions
 import torch
+from config import logger
 from torch import nn, optim
 from torch.utils.data import DataLoader
-from tqdm.auto import tqdm
+
+# from tqdm.auto import tqdm
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -75,7 +77,8 @@ def train_model(
 
     train_time_start = default_timer()
 
-    for epoch in tqdm(range(epochs)):
+    # for epoch in tqdm(range(epochs)):
+    for epoch in range(epochs):
         train_loss, train_acc = train_step(
             model=model,
             dataloader=train_dataloader,
@@ -89,8 +92,8 @@ def train_model(
             loss_fn=loss_fn,
         )
 
-        print(f"\nEpoch: {epoch}/{epochs} | Loss: {train_loss:.5f} | Acc: {train_acc:.2f}% | "
-              f"Test loss: {test_loss:.5f} | Test acc: {test_acc:.2f}%\n")
+        logger.info(f"Epoch: {epoch + 1}/{epochs} | Loss: {train_loss:.5f} | "
+                    f"Acc: {train_acc:.2f}% | Test loss: {test_loss:.5f} | Test acc: {test_acc:.2f}%")
 
         model_result["train_loss"].append(train_loss.item())
         model_result["train_acc"].append(train_acc)
@@ -99,7 +102,7 @@ def train_model(
 
     train_time_end = default_timer()
 
-    print(f"\nModel train time: {train_time_end - train_time_start:.3f} seconds")
+    logger.info(f"Model train time: {train_time_end - train_time_start:.3f} seconds")
 
     return model_result
 
@@ -125,7 +128,7 @@ def eval_model(
         eval_loss /= len(dataloader)
         eval_acc /= len(dataloader)
 
-    print(f"Model eval loss: {eval_loss:.5f} | Acc: {eval_acc:.2f}%")
+    logger.info(f"Model eval loss: {eval_loss:.5f} | Acc: {eval_acc:.2f}%")
 
     return {
         "model_name": model.__class__.__name__,

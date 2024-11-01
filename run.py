@@ -3,6 +3,7 @@ from pathlib import Path
 import data
 import helper_functions
 import torch
+from config import logger
 from image_classification_v0 import ImageClassificationModelv0, eval_model, train_model
 from matplotlib import pyplot as plt
 from torch import nn, optim
@@ -16,7 +17,7 @@ EPOCHS = 2
 
 def run_image_classification_v0() -> None:
     model_name = "image_classification_v0.pth"
-    print("Running ImageClassificationModelv0 model:")
+    logger.info("Running ImageClassificationModelv0 model...")
 
     model = ImageClassificationModelv0(
         input_shape=3,
@@ -47,21 +48,21 @@ def run_image_classification_v0() -> None:
         loss_fn=loss_fn,
     ))
 
-    helper_functions.plot_model_results(model_result)
-    helper_functions.plot_classification_result(
-        dataset=data.test_dataset,
-        pred_labels=model_result["y_preds"],
-        classes=data.train_dataset.classes,
-        n=10,
-        display_shape=True,
-    )
-    helper_functions.plot_confmat(
-        dataset=data.test_dataset,
-        model_result=model_result,
-    )
+    # helper_functions.plot_model_results(model_result)
+    # helper_functions.plot_classification_result(
+    #     dataset=data.test_dataset,
+    #     pred_labels=model_result["y_preds"],
+    #     classes=data.train_dataset.classes,
+    #     n=10,
+    #     display_shape=True,
+    # )
+    # helper_functions.plot_confmat(
+    #     dataset=data.test_dataset,
+    #     model_result=model_result,
+    # )
 
-    torch.save(obj=model.state_dict(), f=MODEL_PATH / model_name)
-    print(f"Model {model_name} state dict was successfully saved!")
+    # torch.save(obj=model.state_dict(), f=MODEL_PATH / model_name)
+    # logger.info(f"Model {model_name} state dict was successfully saved!")
 
     plt.show()
 
