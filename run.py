@@ -48,21 +48,21 @@ def run_image_classification_v0() -> None:
         loss_fn=loss_fn,
     ))
 
-    # helper_functions.plot_model_results(model_result)
-    # helper_functions.plot_classification_result(
-    #     dataset=data.test_dataset,
-    #     pred_labels=model_result["y_preds"],
-    #     classes=data.train_dataset.classes,
-    #     n=10,
-    #     display_shape=True,
-    # )
-    # helper_functions.plot_confmat(
-    #     dataset=data.test_dataset,
-    #     model_result=model_result,
-    # )
+    helper_functions.plot_model_results(model_result)
+    helper_functions.plot_classification_result(
+        dataset=data.test_dataset,
+        pred_labels=model_result["y_preds"],
+        classes=data.train_dataset.classes,
+        n=10,
+        display_shape=True,
+    )
+    helper_functions.plot_confmat(
+        dataset=data.test_dataset,
+        model_result=model_result,
+    )
 
-    # torch.save(obj=model.state_dict(), f=MODEL_PATH / model_name)
-    # logger.info(f"Model {model_name} state dict was successfully saved!")
+    torch.save(obj=model.state_dict(), f=MODEL_PATH / model_name)
+    logger.info(f"Model {model_name} state dict was successfully saved!")
 
     plt.show()
 
