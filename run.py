@@ -15,9 +15,9 @@ MODEL_PATH.mkdir(parents=True, exist_ok=True)
 EPOCHS = 2
 
 
-def run_image_classification_v0() -> None:
+def run_image_classification_model_v0() -> dict[str, list[float] | float | str]:
     model_name = "image_classification_v0.pth"
-    logger.info("Running ImageClassificationModelv0 model...")
+    logger.info("Running ImageClassificationModelv0...")
 
     model = ImageClassificationModelv0(
         input_shape=3,
@@ -48,27 +48,95 @@ def run_image_classification_v0() -> None:
         loss_fn=loss_fn,
     ))
 
-    helper_functions.plot_model_results(model_result)
-    helper_functions.plot_classification_result(
-        dataset=data.test_dataset,
-        pred_labels=model_result["y_preds"],
-        classes=data.train_dataset.classes,
-        n=10,
-        display_shape=True,
-    )
-    helper_functions.plot_confmat(
-        dataset=data.test_dataset,
-        model_result=model_result,
-    )
+    model_result["model_name"] = "SGD(lr=0.01, momentum=0.01, nesterov=True) | Default dataset"
 
     torch.save(obj=model.state_dict(), f=MODEL_PATH / model_name)
-    logger.info(f"Model {model_name} state dict was successfully saved!")
+    logger.info("Models ImageClassificationModelv0 state dict was successfully saved!")
 
-    plt.show()
+    # helper_functions.plot_model_results(model_result)
+    # helper_functions.plot_classification_result(
+    #     dataset=data.test_dataset,
+    #     pred_labels=model_result["y_preds"],
+    #     classes=data.train_dataset.classes,
+    #     n=10,
+    #     display_shape=True,
+    # )
+    # helper_functions.plot_confmat(
+    #     dataset=data.test_dataset,
+    #     model_result=model_result,
+    # )
+
+    # plt.show()
+
+    return model_result
+
+
+def run_image_classification_model_v0_w_transform_v0() -> dict[str, list[float] | float | str]:
+    model_name = "image_classification_model_v0_w_transform_v0.pth"
+    logger.info("Running ImageClassificationModelv0 with transform_v0...")
+
+    model = ImageClassificationModelv0(
+        input_shape=3,
+        hidden_units=10,
+        output_shape=len(data.dataset_classes),
+    ).to(device)
+
+    loss_fn = nn.CrossEntropyLoss()
+    optimizer = optim.SGD(
+        params=model.parameters(),
+        lr=0.01,
+        momentum=0.01,
+        nesterov=True,
+    )
+
+    model_result = train_model(
+        model=model,
+        train_dataloader=data.transform_v0_train_dataloader,
+        test_dataloader=data.transform_v0_test_dataloader,
+        loss_fn=loss_fn,
+        optimizer=optimizer,
+        epochs=EPOCHS,
+    )
+
+    model_result.update(eval_model(
+        model=model,
+        dataloader=data.transform_v0_test_dataloader,
+        loss_fn=loss_fn,
+    ))
+
+    model_result["model_name"] = "SGD(lr=0.01, momentum=0.01, nesterov=True) | RandomHorizontalFlip(p=0.5)"
+
+    torch.save(obj=model.state_dict(), f=MODEL_PATH / model_name)
+    logger.info("Models ImageClassificationModelv0 with transform_v0 state dict was successfully saved!")
+
+    # helper_functions.plot_model_results(model_result)
+    # helper_functions.plot_classification_result(
+    #     dataset=data.transform_v0_test_dataset,
+    #     pred_labels=model_result["y_preds"],
+    #     classes=data.train_dataset.classes,
+    #     n=10,
+    #     display_shape=True,
+    # )
+    # helper_functions.plot_confmat(
+    #     dataset=data.transform_v0_test_dataset,
+    #     model_result=model_result,
+    # )
+
+    # plt.show()
+
+    return model_result
 
 
 def main() -> None:
-    run_image_classification_v0()
+    image_classification_model_v0_result = run_image_classification_model_v0()
+    image_classification_model_v0_w_transform_v0_result = run_image_classification_model_v0_w_transform_v0()
+
+    helper_functions.plot_models_result([
+        image_classification_model_v0_result,
+        image_classification_model_v0_w_transform_v0_result,
+    ])
+
+    plt.show()
 
 
 if __name__ == "__main__":

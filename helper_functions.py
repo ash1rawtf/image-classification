@@ -47,7 +47,7 @@ def plot_classification_result(
             plt.title(title, c="r")
 
 
-def plot_model_results(model_result: dict[str, list[float]]) -> None:
+def plot_model_results(model_result: dict[str, list[float] | float | str]) -> None:
     train_loss = model_result["train_loss"]
     train_acc = model_result["train_acc"]
     test_loss = model_result["test_loss"]
@@ -84,3 +84,34 @@ def plot_confmat(
     )
 
     figure.suptitle(f"{model_result["model_name"]} confusion matrix")
+
+
+def plot_models_result(models_result: list[dict[str, list[float] | float | str]]) -> None:
+    fig, axs = plt.subplots(2, 2, sharex=True, figsize=(10, 10), num="Image classification model results")
+
+    for model_result in models_result:
+        train_loss = model_result["train_loss"]
+        train_acc = model_result["train_acc"]
+        test_loss = model_result["test_loss"]
+        test_acc = model_result["test_acc"]
+        epochs = len(train_loss)
+
+        axs[0, 0].plot(range(epochs), train_loss, label=model_result["model_name"])
+        axs[0, 1].plot(range(epochs), test_loss, label=model_result["model_name"])
+        axs[1, 0].plot(range(epochs), train_acc, label=model_result["model_name"])
+        axs[1, 1].plot(range(epochs), test_acc, label=model_result["model_name"])
+
+    axs[0, 0].set_title("Train loss")
+    axs[0, 1].set_title("Test loss")
+    axs[1, 0].set_title("Train accuracy")
+    axs[1, 1].set_title("Test accuracy")
+
+    for ax_pairs in axs:
+        for ax in ax_pairs:
+            ax.set(xlabel="Epochs")
+
+    fig.legend(*axs[0, 0].get_legend_handles_labels(), loc="outside lower center")
+
+    # fig, ax = plt.bar_label()
+    # for model_result in models_result:
+    #     plt.bar_label()

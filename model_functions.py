@@ -104,6 +104,8 @@ def train_model(
 
     logger.info(f"Model train time: {train_time_end - train_time_start:.3f} seconds")
 
+    model_result["train_time"] = train_time_end - train_time_start
+
     return model_result
 
 
@@ -131,7 +133,6 @@ def eval_model(
     logger.info(f"Model eval loss: {eval_loss:.5f} | Acc: {eval_acc:.2f}%")
 
     return {
-        "model_name": model.__class__.__name__,
         "eval_loss": eval_loss.item(),
         "eval_acc": eval_acc,
         "y_preds": torch.cat(y_preds_list),
