@@ -1,6 +1,7 @@
 from timeit import default_timer
 
 import helper_functions
+import numpy as np
 import torch
 from config import logger
 from torch import nn, optim
@@ -75,16 +76,22 @@ def train_model(
         "test_acc": [],
     }
 
+    temp_train_time_per_epoch = []
+
     train_time_start = default_timer()
 
     # for epoch in tqdm(range(epochs)):
     for epoch in range(epochs):
+        train_time_per_epoch_start = default_timer()
+
         train_loss, train_acc = train_step(
             model=model,
             dataloader=train_dataloader,
             loss_fn=loss_fn,
             optimizer=optimizer,
         )
+
+        train_time_per_epoch_end = default_timer()
 
         test_loss, test_acc = test_step(
             model=model,
@@ -100,11 +107,14 @@ def train_model(
         model_result["test_loss"].append(test_loss.item())
         model_result["test_acc"].append(test_acc)
 
+        temp_train_time_per_epoch.append(train_time_per_epoch_end - train_time_per_epoch_start)
+
     train_time_end = default_timer()
 
     logger.info(f"Model train time: {train_time_end - train_time_start:.3f} seconds")
 
     model_result["train_time"] = train_time_end - train_time_start
+    model_result["avg_train_time_per_epoch"] = np.mean(temp_train_time_per_epoch)
 
     return model_result
 

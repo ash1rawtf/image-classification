@@ -87,7 +87,11 @@ def plot_confmat(
 
 
 def plot_models_result(models_result: list[dict[str, list[float] | float | str]]) -> None:
-    fig, axs = plt.subplots(2, 2, sharex=True, figsize=(10, 10), num="Image classification model results")
+    fig, axs = plt.subplots(2, 4, figsize=(20, 10), num="Image classification model results")
+
+    models = []
+    models_train_time = []
+    models_avg_train_time_per_epoch = []
 
     for model_result in models_result:
         train_loss = model_result["train_loss"]
@@ -96,22 +100,49 @@ def plot_models_result(models_result: list[dict[str, list[float] | float | str]]
         test_acc = model_result["test_acc"]
         epochs = len(train_loss)
 
-        axs[0, 0].plot(range(epochs), train_loss, label=model_result["model_name"])
-        axs[0, 1].plot(range(epochs), test_loss, label=model_result["model_name"])
-        axs[1, 0].plot(range(epochs), train_acc, label=model_result["model_name"])
-        axs[1, 1].plot(range(epochs), test_acc, label=model_result["model_name"])
+        axs[0, 0].plot(range(1, epochs + 1), train_loss, label=model_result["model_name"])
+        axs[0, 1].plot(range(1, epochs + 1), test_loss, label=model_result["model_name"])
+        axs[0, 2].plot(range(1, epochs + 1), train_acc, label=model_result["model_name"])
+        axs[0, 3].plot(range(1, epochs + 1), test_acc, label=model_result["model_name"])
+
+        models.append(model_result["model_name"])
+        models_train_time.append(model_result["train_time"])
+        models_avg_train_time_per_epoch.append(model_result["avg_train_time_per_epoch"])
 
     axs[0, 0].set_title("Train loss")
     axs[0, 1].set_title("Test loss")
-    axs[1, 0].set_title("Train accuracy")
-    axs[1, 1].set_title("Test accuracy")
+    axs[0, 2].set_title("Train accuracy")
+    axs[0, 3].set_title("Test accuracy")
 
-    for ax_pairs in axs:
-        for ax in ax_pairs:
-            ax.set(xlabel="Epochs")
+    axs[0, 0].set(xlabel="Epochs")
+    axs[0, 1].set(xlabel="Epochs")
+    axs[0, 2].set(xlabel="Epochs")
+    axs[0, 3].set(xlabel="Epochs")
+
+    bar_colors = ["tab:blue", "tab:orange", "tab:green", "tab:red", "tab:purple",
+                  "tab:brown", "tab:pink", "tab:gray", "tab:olive", "tab:cyan"]
+
+    axs[1, 0].set_title("Models train time")
+    axs[1, 0].bar_label(
+        axs[1, 0].barh(models, models_train_time, color=bar_colors),
+        fmt="%.2f",
+        label_type="center",
+    )
+    axs[1, 0].set_xlim(right=max(models_train_time) * 1.1)
+    axs[1, 0].set_xlabel("Time, s.")
+    axs[1, 0].tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+
+    axs[1, 1].set_title("Models avarage train time per epoch")
+    axs[1, 1].bar_label(
+        axs[1, 1].barh(models, models_avg_train_time_per_epoch, color=bar_colors),
+        fmt="%.2f",
+        label_type="center",
+    )
+    axs[1, 1].set_xlim(right=max(models_avg_train_time_per_epoch) * 1.1)
+    axs[1, 1].set_xlabel("Time, s.")
+    axs[1, 1].tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+
+    fig.delaxes(axs[1, 2])
+    fig.delaxes(axs[1, 3])
 
     fig.legend(*axs[0, 0].get_legend_handles_labels(), loc="outside lower center")
-
-    # fig, ax = plt.bar_label()
-    # for model_result in models_result:
-    #     plt.bar_label()
