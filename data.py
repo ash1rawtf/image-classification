@@ -7,35 +7,35 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 BATCH_SIZE = 32
 
-train_dataset = datasets.CIFAR10(
+train_dataset_default = datasets.CIFAR10(
     root="data",
     train=True,
     transform=v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
     target_transform=None,
-    download=True,
+    # download=True,
 )
 
-test_dataset = datasets.CIFAR10(
+test_dataset_default = datasets.CIFAR10(
     root="data",
     train=False,
     transform=v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
     target_transform=None,
-    download=True,
+    # download=True,
 )
 
-train_dataloader = DataLoader(
-    dataset=train_dataset,
+train_dataloader_default = DataLoader(
+    dataset=train_dataset_default,
     batch_size=BATCH_SIZE,
     shuffle=True,
 )
 
-test_dataloader = DataLoader(
-    dataset=test_dataset,
+test_dataloader_default = DataLoader(
+    dataset=test_dataset_default,
     batch_size=BATCH_SIZE,
     shuffle=False,
 )
 
-dataset_classes = train_dataset.classes
+dataset_classes = train_dataset_default.classes
 
 train_transform_v0 = v2.Compose([
     v2.RandomHorizontalFlip(p=0.5),
@@ -43,30 +43,30 @@ train_transform_v0 = v2.Compose([
     v2.ToDtype(torch.float32, scale=True),
 ])
 
-transform_v0_train_dataset = datasets.CIFAR10(
+train_dataset_transform_v0 = datasets.CIFAR10(
     root="data",
     train=True,
     transform=train_transform_v0,
     target_transform=None,
-    download=True,
+    # download=True,
 )
 
-transform_v0_test_dataset = datasets.CIFAR10(
+test_dataset_transform_v0 = datasets.CIFAR10(
     root="data",
     train=False,
     transform=v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
     target_transform=None,
-    download=True,
+    # download=True,
 )
 
-transform_v0_train_dataloader = DataLoader(
-    dataset=transform_v0_train_dataset,
+train_dataloader_transform_v0 = DataLoader(
+    dataset=train_dataset_transform_v0,
     batch_size=BATCH_SIZE,
     shuffle=True,
 )
 
-transform_v0_test_dataloader = DataLoader(
-    dataset=transform_v0_test_dataset,
+test_dataloader_transform_v0 = DataLoader(
+    dataset=test_dataset_transform_v0,
     batch_size=BATCH_SIZE,
     shuffle=False,
 )
