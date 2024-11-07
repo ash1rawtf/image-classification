@@ -83,7 +83,7 @@ def plot_confmat(
         figsize=(10, 7),
     )
 
-    figure.suptitle(f"{model_result["model_name"]} confusion matrix")
+    figure.suptitle(f"{model_result["model_desc"]} confusion matrix")
 
 
 def plot_models_result(models_result: list[dict[str, list[float] | float | str]]) -> None:
@@ -100,12 +100,12 @@ def plot_models_result(models_result: list[dict[str, list[float] | float | str]]
         test_acc = model_result["test_acc"]
         epochs = len(train_loss)
 
-        axs[0, 0].plot(range(1, epochs + 1), train_loss, label=model_result["model_name"])
-        axs[0, 1].plot(range(1, epochs + 1), test_loss, label=model_result["model_name"])
-        axs[0, 2].plot(range(1, epochs + 1), train_acc, label=model_result["model_name"])
-        axs[0, 3].plot(range(1, epochs + 1), test_acc, label=model_result["model_name"])
+        axs[0, 0].plot(range(1, epochs + 1), train_loss, label=model_result["model_desc"])
+        axs[0, 1].plot(range(1, epochs + 1), test_loss, label=model_result["model_desc"])
+        axs[0, 2].plot(range(1, epochs + 1), train_acc, label=model_result["model_desc"])
+        axs[0, 3].plot(range(1, epochs + 1), test_acc, label=model_result["model_desc"])
 
-        models.append(model_result["model_name"])
+        models.append(model_result["model_desc"])
         models_train_time.append(model_result["train_time"])
         models_avg_train_time_per_epoch.append(model_result["avg_train_time_per_epoch"])
 

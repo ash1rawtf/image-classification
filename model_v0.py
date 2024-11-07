@@ -71,7 +71,8 @@ def main() -> None:
         loss_fn=loss_fn,
     ))
 
-    model_result["model_name"] = "SGD(lr=0.01, momentum=0.01, nesterov=True) | Default dataset"
+    model_result["model_name"] = "model_v0"
+    model_result["model_desc"] = "SGD(lr=0.01, momentum=0.01, nesterov=True) | Default dataset"
 
     helper_functions.plot_model_results(model_result)
     helper_functions.plot_classification_result(
