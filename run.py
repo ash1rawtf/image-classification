@@ -1,12 +1,13 @@
 from pathlib import Path
 
-import data
 import helper_functions
 import torch
 from config import logger
 from image_classification_v0 import ImageClassificationModelv0, eval_model, train_model
 from matplotlib import pyplot as plt
 from torch import nn, optim
+
+import data
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -53,21 +54,6 @@ def run_image_classification_model_v0() -> dict[str, list[float] | float | str]:
     torch.save(obj=model.state_dict(), f=MODEL_PATH / model_name)
     logger.info("Models ImageClassificationModelv0 state dict was successfully saved!")
 
-    # helper_functions.plot_model_results(model_result)
-    # helper_functions.plot_classification_result(
-    #     dataset=data.test_dataset,
-    #     pred_labels=model_result["y_preds"],
-    #     classes=data.train_dataset.classes,
-    #     n=10,
-    #     display_shape=True,
-    # )
-    # helper_functions.plot_confmat(
-    #     dataset=data.test_dataset,
-    #     model_result=model_result,
-    # )
-
-    # plt.show()
-
     return model_result
 
 
@@ -108,21 +94,6 @@ def run_image_classification_model_v0_w_transform_v0() -> dict[str, list[float] 
 
     torch.save(obj=model.state_dict(), f=MODEL_PATH / model_name)
     logger.info("Models ImageClassificationModelv0 with transform_v0 state dict was successfully saved!")
-
-    # helper_functions.plot_model_results(model_result)
-    # helper_functions.plot_classification_result(
-    #     dataset=data.transform_v0_test_dataset,
-    #     pred_labels=model_result["y_preds"],
-    #     classes=data.train_dataset.classes,
-    #     n=10,
-    #     display_shape=True,
-    # )
-    # helper_functions.plot_confmat(
-    #     dataset=data.transform_v0_test_dataset,
-    #     model_result=model_result,
-    # )
-
-    # plt.show()
 
     return model_result
 
