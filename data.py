@@ -14,7 +14,10 @@ BATCH_SIZE = 32
 train_dataset_default = datasets.CIFAR10(
     root=ROOT_DIR,
     train=True,
-    transform=v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
+    transform=v2.Compose([
+        v2.ToImage(),
+        v2.ToDtype(torch.float32, scale=True),
+    ]),
     target_transform=None,
     download=DOWNLOAD,
 )
@@ -22,7 +25,10 @@ train_dataset_default = datasets.CIFAR10(
 test_dataset_default = datasets.CIFAR10(
     root=ROOT_DIR,
     train=False,
-    transform=v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
+    transform=v2.Compose([
+        v2.ToImage(),
+        v2.ToDtype(torch.float32, scale=True),
+    ]),
     target_transform=None,
     download=DOWNLOAD,
 )
@@ -41,16 +47,14 @@ test_dataloader_default = DataLoader(
 
 dataset_classes = train_dataset_default.classes
 
-train_transform_v0 = v2.Compose([
-    v2.RandomHorizontalFlip(p=0.5),
-    v2.ToImage(),
-    v2.ToDtype(torch.float32, scale=True),
-])
-
 train_dataset_transform_v0 = datasets.CIFAR10(
     root=ROOT_DIR,
     train=True,
-    transform=train_transform_v0,
+    transform=v2.Compose([
+        v2.RandomHorizontalFlip(p=0.5),
+        v2.ToImage(),
+        v2.ToDtype(torch.float32, scale=True),
+    ]),
     target_transform=None,
     download=DOWNLOAD,
 )
@@ -58,7 +62,11 @@ train_dataset_transform_v0 = datasets.CIFAR10(
 test_dataset_transform_v0 = datasets.CIFAR10(
     root=ROOT_DIR,
     train=False,
-    transform=v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
+    transform=v2.Compose([
+        v2.RandomHorizontalFlip(p=0.5),
+        v2.ToImage(),
+        v2.ToDtype(torch.float32, scale=True),
+    ]),
     target_transform=None,
     download=DOWNLOAD,
 )
