@@ -1,12 +1,12 @@
 from pathlib import Path
 
-import helper_functions
 import torch
 from matplotlib import pyplot as plt
-from model_functions import eval_model, train_model
 from torch import nn, optim
 
 import data
+import helper_functions
+from model_functions import eval_model, train_model
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 

@@ -1,14 +1,14 @@
 from pathlib import Path
 
-import helper_functions
 import torch
-from config import logger
 from matplotlib import pyplot as plt
-from model_v0 import Modelv0, eval_model, train_model
 from torch import nn, optim
 from torch.utils.data import DataLoader
 
 import data
+import helper_functions
+from config import logger
+from model_v0 import Modelv0, eval_model, train_model
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 

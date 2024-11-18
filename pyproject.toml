@@ -1,0 +1,22 @@
+[tool.ruff]
+line-length = 120
+lint.preview = true
+
+lint.select = [
+    "ALL"
+]
+lint.ignore = [
+    "CPY", # flake8-copyright (CPY)
+    "D", # pydocstyle (D)
+    "ERA001", # Found commented-out code (ERA001)
+    "FA102", # Missing `from __future__ import annotations`, but uses PEP 604 union (FA102)
+    "FBT001", # Boolean-typed positional argument in function definition (FBT001)
+    "FBT002", # Boolean default positional argument in function definition (FBT002)
+    "INP001", # File `...` is part of an implicit namespace package. Add an `__init__.py` (INP001)
+    "N806", # Variable `...` in function should be lowercase (N806)
+    "PLR0913", # Too many arguments in function definition (PLR0913)
+    "PLR0917", # Too many positional arguments (PLR0917)
+    "PLR2004", # Magic value used in comparison, consider replacing `...` with a constant variable (PLR2004)
+    "PLW2901", # `for` loop variable `...` overwritten by assignment target (PLW2901)
+    "T201", # `print` found (T201)
+]

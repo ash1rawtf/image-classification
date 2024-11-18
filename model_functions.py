@@ -1,13 +1,12 @@
 from timeit import default_timer
 
-import helper_functions
 import numpy as np
 import torch
-from config import logger
 from torch import nn, optim
 from torch.utils.data import DataLoader
 
-# from tqdm.auto import tqdm
+import helper_functions
+from config import logger
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
